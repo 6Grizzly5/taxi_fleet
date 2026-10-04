@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | Taxi Fleet</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<main class="auth-card">
+    <div class="brand">
+        <div class="brand-mark">TF</div>
+        <div>
+            <strong>Taxi Fleet</strong>
+            <span>Gestion de flotte</span>
+        </div>
+    </div>
+
+    <h1>Créer un compte</h1>
+    <p class="muted">Votre compte sera créé avec le rôle utilisateur.</p>
+
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+    <form method="post" th:action="@{/inscription}" th:object="${inscription}">
+        <label for="nom">Nom</label>
+        <input id="nom" type="text" th:field="*{nom}" placeholder="Votre nom" required>
+        <small class="field-error" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></small>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}" placeholder="nom@exemple.com" required>
+        <small class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+
+        <label for="motDePasse">Mot de passe</label>
+        <input id="motDePasse" type="password" th:field="*{motDePasse}" placeholder="6 caractères minimum" required>
+        <small class="field-error" th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></small>
+
+        <button type="submit">Créer le compte</button>
+    </form>
+
+    <p class="switch">Déjà inscrit ? <a th:href="@{/login}">Retour à la connexion</a></p>
+</main>
+</body>
+</html>

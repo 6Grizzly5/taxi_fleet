@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Chauffeurs</title></head>
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
+<body>
+<h1>Chauffeurs</h1>
+<table border="1">
+<tr><th>ID</th><th>Nom</th><th>Téléphone</th><th>Permis</th><th>Statut</th><th>Véhicule</th></tr>
+<tr th:each="driver : ${drivers.content}">
+<td th:text="${driver.id}"></td>
+<td th:text="${driver.nom}"></td>
+<td th:text="${driver.telephone}"></td>
+<td th:text="${driver.numeroPermis}"></td>
+<td th:text="${driver.statut}"></td>
+<td th:text="${driver.vehiculeId}"></td>
+</tr>
+</table>
+</body>
+</html>

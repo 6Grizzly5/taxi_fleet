@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Chauffeur | Taxi Fleet</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #202124;
+        }
+
+        header {
+            height: 68px;
+            padding: 0 40px;
+            background: #ffffff;
+            border-bottom: 1px solid #e1e5e8;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #202124;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border: 2px solid #202124;
+            border-radius: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 14px;
+            letter-spacing: -1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 22px;
+        }
+
+        nav a {
+            color: #5f6368;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #202124;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #5f6368;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back:hover {
+            color: #202124;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e1e5e8;
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .subtitle {
+            margin-top: 7px;
+            margin-bottom: 28px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d7dbe0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fff;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #7a7f85;
+        }
+
+        .error {
+            color: #b42318;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eef0f2;
+        }
+
+        .button {
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cancel {
+            color: #444;
+            border: 1px solid #dfe3e7;
+            background: white;
+        }
+
+        .submit {
+            border: none;
+            background: #202124;
+            color: white;
+        }
+
+        .submit:hover {
+            background: #000;
+        }
+
+        .info {
+            margin-top: 20px;
+            padding: 13px 15px;
+            background: #f7f8f9;
+            border-left: 3px solid #202124;
+            color: #62676d;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 0 18px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 22px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="brand">
+
+        <span class="logo">TF</span>
+
+        <span>Taxi Fleet</span>
+
+    </a>
+
+    <nav>
+
+        <a href="/">Accueil</a>
+        <a href="/chauffeurs">Chauffeurs</a>
+        <a href="/vehicules">Véhicules</a>
+        <a href="/clients">Clients</a>
+        <a href="/courses">Courses</a>
+        <a href="/logout">Déconnexion</a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <a href="/chauffeurs"
+       class="back">
+        ← Retour aux chauffeurs
+    </a>
+
+
+    <div class="card">
+
+        <h1
+                th:if="${id == null}">
+            Nouveau chauffeur
+        </h1>
+
+        <h1
+                th:if="${id != null}">
+            Modifier le chauffeur
+        </h1>
+
+        <p class="subtitle">
+
+            Renseignez les informations du chauffeur.
+
+        </p>
+
+
+        <form
+                th:action="${id == null}
+                    ? @{/chauffeurs}
+                    : @{/chauffeurs/{id}(id=${id})}"
+                th:object="${chauffeur}"
+                method="post">
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label for="nom">
+                        Nom complet
+                    </label>
+
+                    <input
+                            id="nom"
+                            type="text"
+                            th:field="*{nom}"
+                            placeholder="Ex. Rakoto Jean">
+
+                    <div
+                            class="error"
+                            th:if="${#fields.hasErrors('nom')}"
+                            th:errors="*{nom}">
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="telephone">
+                        Téléphone
+                    </label>
+
+                    <input
+                            id="telephone"
+                            type="text"
+                            th:field="*{telephone}"
+                            placeholder="034 XX XXX XX">
+
+                    <div
+                            class="error"
+                            th:if="${#fields.hasErrors('telephone')}"
+                            th:errors="*{telephone}">
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="numeroPermis">
+                        Numéro de permis
+                    </label>
+
+                    <input
+                            id="numeroPermis"
+                            type="text"
+                            th:field="*{numeroPermis}"
+                            placeholder="PER-0001">
+
+                    <div
+                            class="error"
+                            th:if="${#fields.hasErrors('numeroPermis')}"
+                            th:errors="*{numeroPermis}">
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="expirationPermis">
+                        Expiration du permis
+                    </label>
+
+                    <input
+                            id="expirationPermis"
+                            type="date"
+                            th:field="*{expirationPermis}">
+
+                    <div
+                            class="error"
+                            th:if="${#fields.hasErrors('expirationPermis')}"
+                            th:errors="*{expirationPermis}">
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="dateEmbauche">
+                        Date d'embauche
+                    </label>
+
+                    <input
+                            id="dateEmbauche"
+                            type="date"
+                            th:field="*{dateEmbauche}">
+
+                    <div
+                            class="error"
+                            th:if="${#fields.hasErrors('dateEmbauche')}"
+                            th:errors="*{dateEmbauche}">
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="vehiculeId">
+                        Véhicule affecté
+                    </label>
+
+                    <select
+                            id="vehiculeId"
+                            th:field="*{vehiculeId}">
+
+                        <option value="">
+                            Aucun véhicule
+                        </option>
+
+                        <option
+                                th:each="vehicule : ${vehicules.content}"
+                                th:value="${vehicule.id}"
+                                th:text="${vehicule.immatriculation + ' - ' + vehicule.marque + ' ' + vehicule.modele}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="info">
+
+                Le statut du chauffeur est géré automatiquement par
+                l'application. Un nouveau chauffeur est disponible par défaut.
+
+            </div>
+
+
+            <div class="actions">
+
+                <a
+                        href="/chauffeurs"
+                        class="button cancel">
+                    Annuler
+                </a>
+
+                <button
+                        type="submit"
+                        class="button submit">
+
+                    <span th:if="${id == null}">
+                        Enregistrer
+                    </span>
+
+                    <span th:if="${id != null}">
+                        Enregistrer les modifications
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

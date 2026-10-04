@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <title th:text="${title}">Taxi Fleet</title>
+</head>
+<body>
+<main style="max-width:900px;margin:60px auto;padding:0 24px;">
+    <div class="brand">
+        <div class="brand-mark">TF</div>
+        <div><strong>Taxi Fleet</strong><span>Gestion de flotte</span></div>
+    </div>
+    <h1 th:text="${title}">Gestion de flotte de taxis</h1>
+    <p class="muted">Bienvenue dans l'espace de gestion de la flotte.</p>
+    <nav>
+        <a href="/chauffeurs">Chauffeurs</a>
+        &nbsp; · &nbsp;
+        <a href="/login">Déconnexion</a>
+    </nav>
+</main>
+</body>
+</html>

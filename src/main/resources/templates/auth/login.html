@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion | Taxi Fleet</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<main class="auth-card">
+    <div class="brand">
+        <div class="brand-mark">TF</div>
+        <div>
+            <strong>Taxi Fleet</strong>
+            <span>Gestion de flotte</span>
+        </div>
+    </div>
+
+    <h1>Connexion</h1>
+    <p class="muted">Accédez à votre espace de gestion.</p>
+
+    <div class="alert success" th:if="${param.inscription}">Compte créé. Vous pouvez maintenant vous connecter.</div>
+    <div class="alert success" th:if="${param.logout}">Vous êtes déconnecté.</div>
+    <div class="alert error" th:if="${param.error}">Email ou mot de passe incorrect.</div>
+
+    <form method="post" th:action="@{/login}">
+        <label for="username">Email</label>
+        <input id="username" type="email" name="username" placeholder="nom@exemple.com" required autofocus>
+
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" name="password" placeholder="Votre mot de passe" required>
+
+        <button type="submit">Se connecter</button>
+    </form>
+
+    <p class="switch">Pas encore de compte ? <a th:href="@{/inscription}">Créer un compte</a></p>
+</main>
+</body>
+</html>

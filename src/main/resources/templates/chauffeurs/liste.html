@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chauffeurs | Taxi Fleet</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #202124;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e1e5e8;
+            padding: 0 40px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #202124;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border: 2px solid #202124;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            letter-spacing: -1px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #5f6368;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #202124;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 25px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-top: 7px;
+            font-size: 14px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 17px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button-primary {
+            background: #202124;
+            color: white;
+        }
+
+        .button-primary:hover {
+            background: #000000;
+        }
+
+        .search {
+            background: white;
+            border: 1px solid #e0e3e7;
+            border-radius: 9px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search input {
+            flex: 1;
+            border: 1px solid #d7dbe0;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .search button {
+            border: none;
+            background: #202124;
+            color: white;
+            border-radius: 6px;
+            padding: 0 18px;
+            cursor: pointer;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid #e1e5e8;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #eef0f2;
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafafa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .available {
+            background: #e7f6ec;
+            color: #19733e;
+        }
+
+        .course {
+            background: #fff3d6;
+            color: #916300;
+        }
+
+        .pause {
+            background: #e9eefc;
+            color: #3157a4;
+        }
+
+        .danger {
+            background: #fde8e8;
+            color: #b42318;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action {
+            padding: 7px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            border: 1px solid #dfe3e7;
+            color: #333;
+            background: white;
+        }
+
+        .action:hover {
+            background: #f5f5f5;
+        }
+
+        .delete {
+            border: none;
+            background: #fff1f1;
+            color: #b42318;
+            cursor: pointer;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px;
+            color: #6b7280;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: #202124;
+            border: 1px solid #dfe3e7;
+            padding: 8px 13px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .pagination a:hover {
+            background: #f4f4f4;
+        }
+
+        .page-info {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+
+            header {
+                padding: 0 18px;
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 850px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="brand">
+        <span class="logo">TF</span>
+        <span>Taxi Fleet</span>
+    </a>
+
+    <nav>
+        <a href="/">Accueil</a>
+        <a href="/chauffeurs">Chauffeurs</a>
+        <a href="/vehicules">Véhicules</a>
+        <a href="/clients">Clients</a>
+        <a href="/courses">Courses</a>
+        <a href="/logout">Déconnexion</a>
+    </nav>
+
+</header>
+
+<main class="container">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Chauffeurs</h1>
+
+            <div class="subtitle">
+                Gestion des chauffeurs de la flotte
+            </div>
+        </div>
+
+        <a href="/chauffeurs/nouveau"
+           class="button button-primary">
+            + Nouveau chauffeur
+        </a>
+
+    </div>
+
+
+    <form method="get"
+          action="/chauffeurs"
+          class="search">
+
+        <input
+                type="text"
+                name="search"
+                th:value="${search}"
+                placeholder="Rechercher un chauffeur par son nom...">
+
+        <button type="submit">
+            Rechercher
+        </button>
+
+    </form>
+
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Téléphone</th>
+                <th>Permis</th>
+                <th>Expiration</th>
+                <th>Statut</th>
+                <th>Véhicule</th>
+                <th>Actions</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="chauffeur : ${chauffeurs.content}">
+
+                <td th:text="${chauffeur.id}">
+                    1
+                </td>
+
+                <td>
+                    <strong th:text="${chauffeur.nom}">
+                        Jean Dupont
+                    </strong>
+                </td>
+
+                <td th:text="${chauffeur.telephone}">
+                    0340000000
+                </td>
+
+                <td th:text="${chauffeur.numeroPermis}">
+                    PER-001
+                </td>
+
+                <td th:text="${chauffeur.expirationPermis}">
+                    2027-01-01
+                </td>
+
+                <td>
+
+                    <span
+                            th:if="${chauffeur.statut.name() == 'DISPONIBLE'}"
+                            class="badge available">
+                        Disponible
+                    </span>
+
+                    <span
+                            th:if="${chauffeur.statut.name() == 'EN_COURSE'}"
+                            class="badge course">
+                        En course
+                    </span>
+
+                    <span
+                            th:if="${chauffeur.statut.name() == 'EN_PAUSE'}"
+                            class="badge pause">
+                        En pause
+                    </span>
+
+                    <span
+                            th:if="${chauffeur.statut.name() == 'INDISPONIBLE'}"
+                            class="badge danger">
+                        Indisponible
+                    </span>
+
+                    <span
+                            th:if="${chauffeur.statut.name() == 'SUSPENDU'}"
+                            class="badge danger">
+                        Suspendu
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span
+                            th:if="${chauffeur.vehiculeId != null}"
+                            th:text="'Véhicule #' + ${chauffeur.vehiculeId}">
+                        Véhicule #1
+                    </span>
+
+                    <span
+                            th:if="${chauffeur.vehiculeId == null}"
+                            style="color:#8a9097;">
+                        Aucun
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="actions">
+
+                        <a
+                                th:href="@{/chauffeurs/{id}/modifier(id=${chauffeur.id})}"
+                                class="action">
+                            Modifier
+                        </a>
+
+                        <form
+                                th:action="@{/chauffeurs/{id}/supprimer(id=${chauffeur.id})}"
+                                method="post"
+                                style="display:inline;">
+
+                            <button
+                                    type="submit"
+                                    class="action delete"
+                                    onclick="return confirm('Supprimer ce chauffeur ?');">
+                                Supprimer
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+
+            <tr th:if="${chauffeurs.content.isEmpty()}">
+
+                <td colspan="8"
+                    class="empty">
+
+                    Aucun chauffeur trouvé.
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+
+        <div class="pagination"
+             th:if="${chauffeurs.totalPages > 1}">
+
+            <a
+                    th:if="${chauffeurs.hasPrevious()}"
+                    th:href="@{/chauffeurs(
+                        page=${chauffeurs.number - 1},
+                        size=${chauffeurs.size},
+                        search=${search}
+                    )}">
+                ← Précédent
+            </a>
+
+            <span class="page-info">
+
+                Page
+                <strong th:text="${chauffeurs.number + 1}">
+                    1
+                </strong>
+
+                /
+                <strong th:text="${chauffeurs.totalPages}">
+                    1
+                </strong>
+
+            </span>
+
+            <a
+                    th:if="${chauffeurs.hasNext()}"
+                    th:href="@{/chauffeurs(
+                        page=${chauffeurs.number + 1},
+                        size=${chauffeurs.size},
+                        search=${search}
+                    )}">
+                Suivant →
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

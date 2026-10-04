@@ -1,0 +1,65 @@
+:root {
+    --ink: #20252b;
+    --muted: #707780;
+    --line: #e2e5e8;
+    --paper: #f5f6f7;
+    --white: #ffffff;
+    --accent: #d9a21b;
+    --danger: #b42318;
+    --success: #18794e;
+}
+
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+}
+
+a { color: var(--ink); }
+.auth-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+.auth-card {
+    width: min(430px, 100%);
+    background: var(--white);
+    border: 1px solid var(--line);
+    padding: 34px;
+    box-shadow: 0 12px 35px rgba(25, 30, 35, .08);
+}
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; }
+.brand-mark {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    background: var(--ink); color: #fff;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 1px;
+}
+.brand strong, .brand span { display: block; }
+.brand span { margin-top: 3px; color: var(--muted); font-size: 12px; }
+h1 { margin: 0 0 7px; font-size: 28px; }
+.muted { margin: 0 0 25px; color: var(--muted); font-size: 14px; }
+label { display: block; margin: 16px 0 7px; font-size: 13px; font-weight: 700; }
+input {
+    width: 100%; padding: 12px 13px;
+    border: 1px solid #cfd4d8; border-radius: 3px;
+    font: inherit; outline: none;
+}
+input:focus { border-color: var(--ink); }
+button {
+    width: 100%; margin-top: 23px; padding: 12px;
+    border: 0; border-radius: 3px;
+    background: var(--ink); color: #fff;
+    font-weight: 700; cursor: pointer;
+}
+button:hover { opacity: .92; }
+.switch { text-align: center; margin: 22px 0 0; font-size: 13px; color: var(--muted); }
+.switch a { font-weight: 700; }
+.alert { padding: 10px 12px; margin: 14px 0; border: 1px solid; font-size: 13px; }
+.alert.error { color: var(--danger); background: #fff5f4; border-color: #f0c5c1; }
+.alert.success { color: var(--success); background: #f2faf6; border-color: #b9e2ce; }
+.field-error { display: block; margin-top: 5px; color: var(--danger); font-size: 12px; }
