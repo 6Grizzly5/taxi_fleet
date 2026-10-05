@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Véhicule | Taxi Fleet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/app.css}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="/" class="brand">
+        <span class="brand-mark">TF</span>
+        <span>Taxi Fleet</span>
+    </a>
+
+    <nav>
+        <a href="/vehicules">Véhicules</a>
+        <a href="/chauffeurs">Chauffeurs</a>
+    </nav>
+
+</header>
+
+<main class="form-container">
+
+    <div class="form-card">
+
+        <h1 th:text="${id != null ? 'Modifier le véhicule' : 'Nouveau véhicule'}">
+            Nouveau véhicule
+        </h1>
+
+        <p class="muted">
+            Informations du véhicule.
+        </p>
+
+        <form
+                method="post"
+                th:action="${id != null ? '/vehicules/' + id : '/vehicules'}"
+                th:object="${vehicule}">
+
+            <label>
+                Immatriculation
+            </label>
+
+            <input
+                    type="text"
+                    th:field="*{immatriculation}"
+                    required>
+
+
+            <label>
+                Marque
+            </label>
+
+            <input
+                    type="text"
+                    th:field="*{marque}"
+                    required>
+
+
+            <label>
+                Modèle
+            </label>
+
+            <input
+                    type="text"
+                    th:field="*{modele}"
+                    required>
+
+
+            <label>
+                Année
+            </label>
+
+            <input
+                    type="number"
+                    th:field="*{annee}"
+                    min="1990"
+                    required>
+
+
+            <label>
+                Capacité
+            </label>
+
+            <input
+                    type="number"
+                    th:field="*{capacite}"
+                    min="1"
+                    required>
+
+
+            <label>
+                Kilométrage
+            </label>
+
+            <input
+                    type="number"
+                    step="0.1"
+                    th:field="*{kilometrage}"
+                    min="0"
+                    required>
+
+
+            <button type="submit">
+
+                <span
+                        th:text="${id != null ? 'Enregistrer les modifications' : 'Créer le véhicule'}">
+                    Créer le véhicule
+                </span>
+
+            </button>
+
+        </form>
+
+        <p class="switch">
+            <a href="/vehicules">
+                ← Retour aux véhicules
+            </a>
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>

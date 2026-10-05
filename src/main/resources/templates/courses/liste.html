@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Courses | Taxi Fleet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/app.css}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="/" class="brand">
+        <span class="brand-mark">TF</span>
+        <span>Taxi Fleet</span>
+    </a>
+
+    <nav>
+        <a href="/">Accueil</a>
+        <a href="/chauffeurs">Chauffeurs</a>
+        <a href="/vehicules">Véhicules</a>
+        <a href="/clients">Clients</a>
+        <a href="/courses">Courses</a>
+        <a href="/logout">Déconnexion</a>
+    </nav>
+
+</header>
+
+<main class="container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Courses</h1>
+
+            <p class="muted">
+                Gestion des courses et affectation automatique.
+            </p>
+
+        </div>
+
+        <a
+                href="/courses/nouveau"
+                class="button-primary">
+            + Nouvelle course
+        </a>
+
+    </div>
+
+    <form
+            method="get"
+            action="/courses"
+            class="search">
+
+        <input
+                type="text"
+                name="search"
+                th:value="${search}"
+                placeholder="Départ ou destination...">
+
+        <button type="submit">
+            Rechercher
+        </button>
+
+    </form>
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Trajet</th>
+                <th>Distance</th>
+                <th>Tarif</th>
+                <th>Date</th>
+                <th>Chauffeur</th>
+                <th>Véhicule</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="course : ${courses.content}">
+
+                <td th:text="${course.id}">
+                    1
+                </td>
+
+                <td th:text="${course.clientNom}">
+                    Jean
+                </td>
+
+                <td>
+
+                    <strong th:text="${course.depart}">
+                        Ivato
+                    </strong>
+
+                    →
+
+                    <strong th:text="${course.destination}">
+                        Analakely
+                    </strong>
+
+                </td>
+
+                <td th:text="${course.distance + ' km'}">
+                    10 km
+                </td>
+
+                <td th:text="${course.tarif + ' Ar'}">
+                    10000 Ar
+                </td>
+
+                <td th:text="${#temporals.format(course.dateHeure, 'dd/MM/yyyy HH:mm')}">
+                    05/10/2026 10:00
+                </td>
+
+                <td>
+
+                    <span
+                            th:if="${course.chauffeurNom != null}"
+                            th:text="${course.chauffeurNom}">
+                        Chauffeur
+                    </span>
+
+                    <span
+                            th:if="${course.chauffeurNom == null}"
+                            class="muted">
+                        Non attribué
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span
+                            th:if="${course.immatriculation != null}"
+                            th:text="${course.immatriculation}">
+                        1234 TAB
+                    </span>
+
+                    <span
+                            th:if="${course.immatriculation == null}"
+                            class="muted">
+                        -
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span
+                            class="badge pause"
+                            th:if="${course.statut.name() == 'EN_ATTENTE'}">
+                        En attente
+                    </span>
+
+                    <span
+                            class="badge available"
+                            th:if="${course.statut.name() == 'ASSIGNEE'}">
+                        Assignée
+                    </span>
+
+                    <span
+                            class="badge course"
+                            th:if="${course.statut.name() == 'EN_COURS'}">
+                        En cours
+                    </span>
+
+                    <span
+                            class="badge available"
+                            th:if="${course.statut.name() == 'TERMINEE'}">
+                        Terminée
+                    </span>
+
+                    <span
+                            class="badge danger"
+                            th:if="${course.statut.name() == 'ANNULEE'}">
+                        Annulée
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="actions">
+
+                        <form
+                                th:if="${course.statut.name() == 'EN_ATTENTE'}"
+                                th:action="@{/courses/{id}/assigner(id=${course.id})}"
+                                method="post">
+
+                            <button
+                                    type="submit"
+                                    class="action">
+                                Attribuer
+                            </button>
+
+                        </form>
+
+                        <form
+                                th:if="${course.statut.name() == 'ASSIGNEE'}"
+                                th:action="@{/courses/{id}/demarrer(id=${course.id})}"
+                                method="post">
+
+                            <button
+                                    type="submit"
+                                    class="action">
+                                Démarrer
+                            </button>
+
+                        </form>
+
+                        <form
+                                th:if="${course.statut.name() == 'EN_COURS'}"
+                                th:action="@{/courses/{id}/terminer(id=${course.id})}"
+                                method="post">
+
+                            <button
+                                    type="submit"
+                                    class="action">
+                                Terminer
+                            </button>
+
+                        </form>
+
+                        <form
+                                th:if="${course.statut.name() != 'TERMINEE'
+                                        and course.statut.name() != 'ANNULEE'
+                                        and course.statut.name() != 'EN_COURS'}"
+                                th:action="@{/courses/{id}/annuler(id=${course.id})}"
+                                method="post">
+
+                            <button
+                                    type="submit"
+                                    class="action delete"
+                                    onclick="return confirm('Annuler cette course ?');">
+                                Annuler
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${courses.content.isEmpty()}">
+
+                <td colspan="10"
+                    class="empty">
+
+                    Aucune course trouvée.
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="pagination"
+             th:if="${courses.totalPages > 1}">
+
+            <a
+                    th:if="${courses.hasPrevious()}"
+                    th:href="@{/courses(
+                        page=${courses.number - 1},
+                        size=${courses.size},
+                        search=${search}
+                    )}">
+                ← Précédent
+            </a>
+
+            <span class="page-info">
+
+                Page
+                <strong th:text="${courses.number + 1}">
+                    1
+                </strong>
+                /
+                <strong th:text="${courses.totalPages}">
+                    1
+                </strong>
+
+            </span>
+
+            <a
+                    th:if="${courses.hasNext()}"
+                    th:href="@{/courses(
+                        page=${courses.number + 1},
+                        size=${courses.size},
+                        search=${search}
+                    )}">
+                Suivant →
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

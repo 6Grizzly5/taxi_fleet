@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Clients | Taxi Fleet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/app.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="/" class="brand">
+        <span class="brand-mark">TF</span>
+        <span>Taxi Fleet</span>
+    </a>
+
+    <nav>
+        <a href="/">Accueil</a>
+        <a href="/chauffeurs">Chauffeurs</a>
+        <a href="/vehicules">Véhicules</a>
+        <a href="/clients">Clients</a>
+        <a href="/courses">Courses</a>
+        <a href="/logout">Déconnexion</a>
+    </nav>
+
+</header>
+
+<main class="container">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Clients</h1>
+            <p class="muted">
+                Gestion des clients utilisant le service de taxi.
+            </p>
+        </div>
+
+        <a href="/clients/nouveau"
+           class="button-primary">
+            + Nouveau client
+        </a>
+
+    </div>
+
+    <form method="get"
+          action="/clients"
+          class="search">
+
+        <input
+                type="text"
+                name="search"
+                th:value="${search}"
+                placeholder="Rechercher par nom...">
+
+        <button type="submit">
+            Rechercher
+        </button>
+
+    </form>
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Téléphone</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="client : ${clients.content}">
+
+                <td th:text="${client.id}">
+                    1
+                </td>
+
+                <td>
+                    <strong th:text="${client.nom}">
+                        Client
+                    </strong>
+                </td>
+
+                <td th:text="${client.telephone}">
+                    0340000000
+                </td>
+
+                <td th:text="${client.email}">
+                    client@email.com
+                </td>
+
+                <td class="actions">
+
+                    <a
+                            class="action"
+                            th:href="@{/clients/{id}/modifier(id=${client.id})}">
+                        Modifier
+                    </a>
+
+                    <form
+                            th:action="@{/clients/{id}/supprimer(id=${client.id})}"
+                            method="post">
+
+                        <button
+                                type="submit"
+                                class="action delete"
+                                onclick="return confirm('Supprimer ce client ?');">
+                            Supprimer
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${clients.content.isEmpty()}">
+
+                <td colspan="5"
+                    class="empty">
+
+                    Aucun client trouvé.
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="pagination"
+             th:if="${clients.totalPages > 1}">
+
+            <a
+                    th:if="${clients.hasPrevious()}"
+                    th:href="@{/clients(
+                        page=${clients.number - 1},
+                        size=${clients.size},
+                        search=${search}
+                    )}">
+                ← Précédent
+            </a>
+
+            <span class="page-info">
+
+                Page
+                <strong th:text="${clients.number + 1}">
+                    1
+                </strong>
+                /
+                <strong th:text="${clients.totalPages}">
+                    1
+                </strong>
+
+            </span>
+
+            <a
+                    th:if="${clients.hasNext()}"
+                    th:href="@{/clients(
+                        page=${clients.number + 1},
+                        size=${clients.size},
+                        search=${search}
+                    )}">
+                Suivant →
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

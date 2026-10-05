@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Véhicules | Taxi Fleet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/app.css}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="/" class="brand">
+        <span class="brand-mark">TF</span>
+        <span>Taxi Fleet</span>
+    </a>
+
+    <nav>
+        <a href="/">Accueil</a>
+        <a href="/chauffeurs">Chauffeurs</a>
+        <a href="/vehicules">Véhicules</a>
+        <a href="/clients">Clients</a>
+        <a href="/courses">Courses</a>
+        <a href="/logout">Déconnexion</a>
+    </nav>
+
+</header>
+
+<main class="container">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Véhicules</h1>
+
+            <p class="muted">
+                Gestion des véhicules de la flotte.
+            </p>
+        </div>
+
+        <a href="/vehicules/nouveau"
+           class="button-primary">
+            + Nouveau véhicule
+        </a>
+
+    </div>
+
+    <form
+            method="get"
+            action="/vehicules"
+            class="search">
+
+        <input
+                type="text"
+                name="search"
+                th:value="${search}"
+                placeholder="Rechercher une immatriculation...">
+
+        <button type="submit">
+            Rechercher
+        </button>
+
+    </form>
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Immatriculation</th>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Année</th>
+                <th>Capacité</th>
+                <th>Kilométrage</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="v : ${vehicules.content}">
+
+                <td th:text="${v.id}">
+                    1
+                </td>
+
+                <td>
+                    <strong th:text="${v.immatriculation}">
+                        1234 TAB
+                    </strong>
+                </td>
+
+                <td th:text="${v.marque}">
+                    Toyota
+                </td>
+
+                <td th:text="${v.modele}">
+                    Corolla
+                </td>
+
+                <td th:text="${v.annee}">
+                    2022
+                </td>
+
+                <td th:text="${v.capacite}">
+                    4
+                </td>
+
+                <td th:text="${v.kilometrage + ' km'}">
+                    50000 km
+                </td>
+
+                <td>
+
+                    <span
+                            class="badge available"
+                            th:if="${v.statut.name() == 'DISPONIBLE'}">
+                        Disponible
+                    </span>
+
+                    <span
+                            class="badge course"
+                            th:if="${v.statut.name() == 'EN_COURSE'}">
+                        En course
+                    </span>
+
+                    <span
+                            class="badge pause"
+                            th:if="${v.statut.name() == 'MAINTENANCE'}">
+                        Maintenance
+                    </span>
+
+                    <span
+                            class="badge danger"
+                            th:if="${v.statut.name() == 'HORS_SERVICE'}">
+                        Hors service
+                    </span>
+
+                </td>
+
+                <td class="actions">
+
+                    <a
+                            class="action"
+                            th:href="@{/vehicules/{id}/modifier(id=${v.id})}">
+                        Modifier
+                    </a>
+
+                    <form
+                            th:action="@{/vehicules/{id}/supprimer(id=${v.id})}"
+                            method="post">
+
+                        <button
+                                type="submit"
+                                class="action delete"
+                                onclick="return confirm('Supprimer ce véhicule ?');">
+                            Supprimer
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${vehicules.content.isEmpty()}">
+
+                <td colspan="9"
+                    class="empty">
+
+                    Aucun véhicule trouvé.
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="pagination"
+             th:if="${vehicules.totalPages > 1}">
+
+            <a
+                    th:if="${vehicules.hasPrevious()}"
+                    th:href="@{/vehicules(
+                        page=${vehicules.number - 1},
+                        size=${vehicules.size},
+                        search=${search}
+                    )}">
+                ← Précédent
+            </a>
+
+            <span class="page-info">
+
+                Page
+                <strong th:text="${vehicules.number + 1}">
+                    1
+                </strong>
+                /
+                <strong th:text="${vehicules.totalPages}">
+                    1
+                </strong>
+
+            </span>
+
+            <a
+                    th:if="${vehicules.hasNext()}"
+                    th:href="@{/vehicules(
+                        page=${vehicules.number + 1},
+                        size=${vehicules.size},
+                        search=${search}
+                    )}">
+                Suivant →
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

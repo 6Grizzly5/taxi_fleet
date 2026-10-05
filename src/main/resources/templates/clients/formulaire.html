@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Client | Taxi Fleet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/app.css}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="/" class="brand">
+        <span class="brand-mark">TF</span>
+        <span>Taxi Fleet</span>
+    </a>
+
+    <nav>
+        <a href="/clients">Clients</a>
+        <a href="/courses">Courses</a>
+    </nav>
+
+</header>
+
+<main class="form-container">
+
+    <div class="form-card">
+
+        <h1 th:text="${id != null ? 'Modifier le client' : 'Nouveau client'}">
+            Nouveau client
+        </h1>
+
+        <p class="muted">
+            Informations du client.
+        </p>
+
+        <form
+                method="post"
+                th:action="${id != null ? '/clients/' + id : '/clients'}"
+                th:object="${client}">
+
+            <label for="nom">
+                Nom
+            </label>
+
+            <input
+                    id="nom"
+                    type="text"
+                    th:field="*{nom}"
+                    required>
+
+            <span
+                    class="field-error"
+                    th:if="${#fields.hasErrors('nom')}"
+                    th:errors="*{nom}">
+            </span>
+
+
+            <label for="telephone">
+                Téléphone
+            </label>
+
+            <input
+                    id="telephone"
+                    type="text"
+                    th:field="*{telephone}"
+                    required>
+
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                    id="email"
+                    type="email"
+                    th:field="*{email}"
+                    required>
+
+            <span
+                    class="field-error"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}">
+            </span>
+
+
+            <button type="submit">
+
+                <span th:text="${id != null ? 'Enregistrer les modifications' : 'Créer le client'}">
+                    Créer le client
+                </span>
+
+            </button>
+
+        </form>
+
+        <p class="switch">
+            <a href="/clients">
+                ← Retour aux clients
+            </a>
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>

@@ -1,25 +1,140 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
-    <link rel="stylesheet" th:href="@{/css/app.css}">
-    <title th:text="${title}">Taxi Fleet</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon"
+          type="image/svg+xml"
+          th:href="@{/img/favicon.svg}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/app.css}">
+
+    <title>Taxi Fleet</title>
+
 </head>
+
 <body>
-<main style="max-width:900px;margin:60px auto;padding:0 24px;">
-    <div class="brand">
-        <div class="brand-mark">TF</div>
-        <div><strong>Taxi Fleet</strong><span>Gestion de flotte</span></div>
-    </div>
-    <h1 th:text="${title}">Gestion de flotte de taxis</h1>
-    <p class="muted">Bienvenue dans l'espace de gestion de la flotte.</p>
+
+<header class="topbar">
+
+    <a href="/" class="brand">
+
+        <span class="brand-mark">
+            TF
+        </span>
+
+        <span>
+            Taxi Fleet
+        </span>
+
+    </a>
+
     <nav>
-        <a href="/chauffeurs">Chauffeurs</a>
-        &nbsp; · &nbsp;
-        <a href="/login">Déconnexion</a>
+
+        <a href="/chauffeurs">
+            Chauffeurs
+        </a>
+
+        <a href="/vehicules">
+            Véhicules
+        </a>
+
+        <a href="/clients">
+            Clients
+        </a>
+
+        <a href="/courses">
+            Courses
+        </a>
+
+        <a href="/logout">
+            Déconnexion
+        </a>
+
     </nav>
+
+</header>
+
+<main class="container">
+
+    <section>
+
+        <h1>
+            Gestion de flotte de taxis
+        </h1>
+
+        <p class="muted">
+            Gérez les chauffeurs, véhicules, clients et courses
+            depuis un espace centralisé.
+        </p>
+
+    </section>
+
+    <section class="dashboard-grid">
+
+        <a href="/chauffeurs"
+           class="dashboard-card">
+
+            <strong>
+                Chauffeurs
+            </strong>
+
+            <span>
+                Gérer les chauffeurs
+            </span>
+
+        </a>
+
+        <a href="/vehicules"
+           class="dashboard-card">
+
+            <strong>
+                Véhicules
+            </strong>
+
+            <span>
+                Gérer la flotte
+            </span>
+
+        </a>
+
+        <a href="/clients"
+           class="dashboard-card">
+
+            <strong>
+                Clients
+            </strong>
+
+            <span>
+                Gérer les clients
+            </span>
+
+        </a>
+
+        <a href="/courses"
+           class="dashboard-card">
+
+            <strong>
+                Courses
+            </strong>
+
+            <span>
+                Gérer les courses
+            </span>
+
+        </a>
+
+    </section>
+
 </main>
+
 </body>
+
 </html>

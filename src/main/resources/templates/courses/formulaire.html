@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nouvelle course | Taxi Fleet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/app.css}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="/" class="brand">
+        <span class="brand-mark">TF</span>
+        <span>Taxi Fleet</span>
+    </a>
+
+    <nav>
+        <a href="/courses">Courses</a>
+        <a href="/clients">Clients</a>
+    </nav>
+
+</header>
+
+<main class="form-container">
+
+    <div class="form-card">
+
+        <h1>Nouvelle course</h1>
+
+        <p class="muted">
+            Enregistrez une nouvelle demande de course.
+        </p>
+
+        <form
+                method="post"
+                action="/courses"
+                th:object="${course}">
+
+            <label for="clientId">
+                Client
+            </label>
+
+            <select
+                    id="clientId"
+                    th:field="*{clientId}"
+                    required>
+
+                <option value="">
+                    Sélectionner un client
+                </option>
+
+                <option
+                        th:each="client : ${clients.content}"
+                        th:value="${client.id}"
+                        th:text="${client.nom + ' - ' + client.telephone}">
+                </option>
+
+            </select>
+
+
+            <label for="depart">
+                Départ
+            </label>
+
+            <input
+                    id="depart"
+                    type="text"
+                    th:field="*{depart}"
+                    required>
+
+
+            <label for="destination">
+                Destination
+            </label>
+
+            <input
+                    id="destination"
+                    type="text"
+                    th:field="*{destination}"
+                    required>
+
+
+            <label for="distance">
+                Distance (km)
+            </label>
+
+            <input
+                    id="distance"
+                    type="number"
+                    step="0.1"
+                    min="0.1"
+                    th:field="*{distance}"
+                    required>
+
+
+            <label for="tarif">
+                Tarif (Ar)
+            </label>
+
+            <input
+                    id="tarif"
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    th:field="*{tarif}"
+                    required>
+
+
+            <label for="dateHeure">
+                Date et heure
+            </label>
+
+            <input
+                    id="dateHeure"
+                    type="datetime-local"
+                    th:field="*{dateHeure}"
+                    required>
+
+
+            <button type="submit">
+                Créer la course
+            </button>
+
+        </form>
+
+        <p class="switch">
+
+            <a href="/courses">
+                ← Retour aux courses
+            </a>
+
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>

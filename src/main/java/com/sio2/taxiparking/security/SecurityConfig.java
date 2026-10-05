@@ -20,8 +20,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /*
-     * Spring Security cherche l'utilisateur par son email
+    /**
+     * Spring Security cherche l'utilisateur
      * directement dans la base de données.
      */
     @Bean
@@ -62,11 +62,12 @@ public class SecurityConfig {
     ) throws Exception {
 
         http
-
             .authorizeHttpRequests(auth -> auth
 
                 /*
-                 * Pages publiques
+                 * =========================
+                 * PAGES PUBLIQUES
+                 * =========================
                  */
                 .requestMatchers(
                         "/login",
@@ -78,8 +79,11 @@ public class SecurityConfig {
                         "/favicon.ico"
                 ).permitAll()
 
+
                 /*
-                 * API
+                 * =========================
+                 * API REST
+                 * =========================
                  */
                 .requestMatchers("/api/**")
                 .hasAnyRole(
@@ -89,11 +93,11 @@ public class SecurityConfig {
                         "USER"
                 )
 
+
                 /*
-                 * Gestion des chauffeurs
-                 *
-                 * Pour le moment USER peut également
-                 * accéder à la page pendant le développement.
+                 * =========================
+                 * CHAUFFEURS
+                 * =========================
                  */
                 .requestMatchers("/chauffeurs/**")
                 .hasAnyRole(
@@ -103,9 +107,54 @@ public class SecurityConfig {
                         "USER"
                 )
 
+
                 /*
-                 * Ancienne route conservée temporairement
-                 * pour éviter les liens cassés.
+                 * =========================
+                 * VÉHICULES
+                 * =========================
+                 */
+                .requestMatchers("/vehicules/**")
+                .hasAnyRole(
+                        "ADMIN",
+                        "MANAGER",
+                        "OPERATOR",
+                        "USER"
+                )
+
+
+                /*
+                 * =========================
+                 * CLIENTS
+                 * =========================
+                 */
+                .requestMatchers("/clients/**")
+                .hasAnyRole(
+                        "ADMIN",
+                        "MANAGER",
+                        "OPERATOR",
+                        "USER"
+                )
+
+
+                /*
+                 * =========================
+                 * COURSES
+                 * =========================
+                 */
+                .requestMatchers("/courses/**")
+                .hasAnyRole(
+                        "ADMIN",
+                        "MANAGER",
+                        "OPERATOR",
+                        "USER"
+                )
+
+
+                /*
+                 * =========================
+                 * ANCIENNE ROUTE DRIVERS
+                 * =========================
+                 * Conservée temporairement.
                  */
                 .requestMatchers("/drivers/**")
                 .hasAnyRole(
@@ -115,23 +164,32 @@ public class SecurityConfig {
                         "USER"
                 )
 
+
                 /*
-                 * Accueil
+                 * =========================
+                 * ACCUEIL
+                 * =========================
                  */
                 .requestMatchers(
                         "/",
                         "/accueil"
                 ).authenticated()
 
+
                 /*
-                 * Tout le reste nécessite une connexion.
+                 * =========================
+                 * TOUT LE RESTE
+                 * =========================
                  */
                 .anyRequest()
                 .authenticated()
             )
 
+
             /*
-             * Connexion
+             * =========================
+             * CONNEXION
+             * =========================
              */
             .formLogin(form -> form
 
@@ -145,8 +203,11 @@ public class SecurityConfig {
                 .permitAll()
             )
 
+
             /*
-             * Déconnexion
+             * =========================
+             * DÉCONNEXION
+             * =========================
              */
             .logout(logout -> logout
 
