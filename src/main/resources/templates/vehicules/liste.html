@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Véhicules</title>
+	<style>
+		body{font-family:Arial,sans-serif;background:#f4f6f8;color:#17202a;margin:0}
+		nav{background:#111;color:white;padding:16px 5%;display:flex;gap:18px;align-items:center}
+		nav a{color:white;text-decoration:none}
+		main{max-width:1200px;margin:35px auto;padding:0 20px}
+		.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+		.card{background:white;padding:20px;border-radius:12px;box-shadow:0 3px 12px #0001}
+		.btn{display:inline-block;background:#111;color:white;padding:9px 14px;border-radius:7px;text-decoration:none;border:0;cursor:pointer}
+		.btn.green{background:#15803d}
+		.btn.red{background:#b91c1c}
+		.btn.blue{background:#2563eb}
+		input,select{padding:10px;width:100%;box-sizing:border-box;margin:5px 0 14px;border:1px solid #ccd2d8;border-radius:7px}
+		table{width:100%;border-collapse:collapse;background:white}
+		th,td{padding:11px;border-bottom:1px solid #ddd;text-align:left}
+		.muted{color:#68707a}
+		.error{color:#b91c1c;background:#fee2e2;padding:10px;border-radius:7px}
+		.success{color:#166534;background:#dcfce7;padding:10px;border-radius:7px}
+	
+        .nav-back{background:#292929;color:#fff;border:1px solid #555;border-radius:7px;padding:8px 12px;cursor:pointer;font:inherit}
+        nav form{margin-left:auto}
+        @media(max-width:600px){nav{flex-wrap:wrap}.nav-back{order:0}}
+        </style>
+</head>
+<body>
+	<nav>
+		<button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='/'}">← Retour</button>
+		<strong>TaxiParking</strong>
+		<form method="post" th:action="@{/logout}" style="margin-left:auto">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<button class="btn" type="submit">Déconnexion</button>
+		</form>
+	</nav>
+	<main>
+		<h1>Véhicules</h1>
+		<table>
+			<tr><th>Immatriculation</th><th>Marque</th><th>Modèle</th><th>Capacité</th><th>Statut</th></tr>
+			<tr th:each="v:${page.content}">
+				<td th:text="${v.immatriculation}"></td>
+				<td th:text="${v.marque}"></td>
+				<td th:text="${v.modele}"></td>
+				<td th:text="${v.capacite}"></td>
+				<td th:text="${v.statut}"></td>
+			</tr>
+		</table>
+	</main>
+</body>
+</html>

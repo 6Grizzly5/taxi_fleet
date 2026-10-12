@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${errorTitle} + ' | TaxiParking'">Erreur | TaxiParking</title>
+    <style>
+        *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:#f4f6f8;color:#17202a;display:flex;flex-direction:column}
+        nav{background:#111;color:white;padding:14px 5%;display:flex;align-items:center;gap:12px}
+        .brand{font-weight:700;margin-left:8px}.back{border:1px solid #555;background:#252525;color:#fff;padding:9px 12px;border-radius:8px;cursor:pointer}
+        main{width:min(620px,92%);margin:auto;padding:42px 0}.card{background:white;border-radius:16px;padding:clamp(24px,5vw,42px);box-shadow:0 8px 30px #0000000d;text-align:center}
+        .code{font-size:14px;font-weight:700;letter-spacing:2px;color:#2563eb;background:#eff6ff;border-radius:99px;padding:8px 14px;display:inline-block}
+        h1{font-size:clamp(25px,4vw,34px);margin:20px 0 12px}.message{color:#586273;line-height:1.7}
+        .actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:26px}
+        .btn{display:inline-block;padding:11px 16px;border-radius:8px;text-decoration:none;font-weight:600;border:0;cursor:pointer}
+        .primary{background:#2563eb;color:#fff}.secondary{background:#eef0f3;color:#17202a}
+        footer{text-align:center;color:#77808d;padding:20px;font-size:13px}
+    </style>
+</head>
+<body>
+<nav>
+    <button class="back" type="button" onclick="if(history.length>1){history.back()}else{location.href='/login'}">← Retour</button>
+    <span class="brand">TaxiParking</span>
+</nav>
+<main>
+    <section class="card">
+        <span class="code" th:text="'ERREUR ' + ${status}">ERREUR</span>
+        <h1 th:text="${errorTitle}">Une erreur est survenue</h1>
+        <p class="message" th:text="${errorMessage}">Désolé, nous n’avons pas pu accéder à cette page.</p>
+        <div class="actions">
+            <a class="btn primary" th:href="@{/}">Retour à l’accueil</a>
+            <a class="btn secondary" th:href="@{/login}">Connexion</a>
+        </div>
+    </section>
+</main>
+<footer>TaxiParking · Gestion de flotte et de parking</footer>
+</body>
+</html>
