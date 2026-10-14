@@ -1,0 +1,131 @@
+{
+  "info": {
+    "name": "TaxiFleet API",
+    "description": "Collection de tests de l'API TaxiFleet. L'API REST utilise HTTP Basic : renseignez username/password dans les variables de collection. Le compte admin de démonstration est créé au premier démarrage. Utilisez HTTPS hors environnement local.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "rideId",
+      "value": "1"
+    },
+    {
+      "key": "username",
+      "value": "admintaxi@gmail.com"
+    },
+    {
+      "key": "password",
+      "value": "123admin"
+    }
+  ],
+  "item": [
+    {
+      "name": "Chauffeurs - lister",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/drivers?page=0&size=10&sort=nom"
+      }
+    },
+    {
+      "name": "Véhicules - lister",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/vehicles?page=0&size=10&sort=immatriculation"
+      }
+    },
+    {
+      "name": "Courses - lister (ADMIN)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/rides?page=0&size=10&sort=dateHeure"
+      }
+    },
+    {
+      "name": "Course - créer (CLIENT ou ADMIN)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"clientId\": 1,\n  \"depart\": \"Ivato\",\n  \"destination\": \"Analakely\",\n  \"nombrePersonnes\": 2,\n  \"tarif\": 15000,\n  \"distance\": 12.5\n}"
+        },
+        "url": "{{baseUrl}}/api/rides"
+      }
+    },
+    {
+      "name": "Course - attribution automatique (ADMIN)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/api/rides/{{rideId}}/assign"
+      }
+    },
+    {
+      "name": "Course - démarrer (session CHAUFFEUR affecté)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/api/rides/{{rideId}}/start"
+      }
+    },
+    {
+      "name": "Course - terminer (session CHAUFFEUR affecté)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/api/rides/{{rideId}}/complete"
+      }
+    },
+    {
+      "name": "Course - annuler (ADMIN)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/api/rides/{{rideId}}/cancel"
+      }
+    },
+    {
+      "name": "Statistiques - revenus",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/statistics/revenue?from=2026-01-01&to=2026-12-31"
+      }
+    },
+    {
+      "name": "Statistiques - activité",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/statistics/activity?from=2026-01-01&to=2026-12-31"
+      }
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{username}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{password}}",
+        "type": "string"
+      }
+    ]
+  }
+}

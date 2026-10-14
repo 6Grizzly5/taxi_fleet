@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Gestion du parking')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: topbar('admin', 'parking')}"></div>
+
+<main class="page" id="contenu">
+
+    <div class="page-head">
+        <div>
+            <h1>Gestion du parking</h1>
+            <p>Vue d’ensemble des places et des réservations enregistrées.</p>
+        </div>
+    </div>
+
+    <section>
+        <div class="section-head"><h2>Places de parking</h2></div>
+        <div class="panel table-panel"><div class="table-wrap">
+            <table class="data">
+                <thead><tr><th>Numéro</th><th>Zone</th><th>Type</th><th>Statut</th></tr></thead>
+                <tbody>
+                    <tr th:each="p:${placesList}">
+                        <td class="strong" th:text="${p.numero}"></td>
+                        <td th:text="${p.zone}"></td>
+                        <td th:text="${p.type}"></td>
+                        <td><span th:replace="~{fragments/layout :: statut(${p.statut})}"></span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(placesList)}"><td class="empty" colspan="4">Aucune place enregistrée.</td></tr>
+                </tbody>
+            </table>
+        </div></div>
+    </section>
+
+    <section class="section">
+        <div class="section-head"><h2>Réservations</h2></div>
+        <div class="panel table-panel">
+            <div class="table-wrap">
+                <table class="data">
+                    <thead>
+                        <tr><th>Client</th><th>Véhicule</th><th>Place</th><th>Arrivée</th><th>Départ</th><th class="num">Tarif (Ar)</th><th>Statut</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r:${reservationsPage.content}">
+                            <td class="strong" th:text="${r.utilisateurNom}"></td>
+                            <td><span class="plate" th:text="${r.immatriculation}"></span></td>
+                            <td th:text="${r.numeroPlace}"></td>
+                            <td th:text="${#strings.replace(r.arriveePrevue, 'T', ' ')}"></td>
+                            <td th:text="${#strings.replace(r.departPrevu, 'T', ' ')}"></td>
+                            <td class="num" th:text="${r.tarif}"></td>
+                            <td><span th:replace="~{fragments/layout :: statut(${r.statut})}"></span></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(reservationsPage.content)}"><td class="empty" colspan="7">Aucune réservation pour le moment.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav th:replace="~{fragments/layout :: pager(${reservationsPage}, '/admin/parking')}"></nav>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

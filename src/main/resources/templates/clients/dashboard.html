@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mon espace')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: topbar('client', 'dashboard')}"></div>
+
+<main class="page" id="contenu">
+
+    <div class="page-head">
+        <h1>Bonjour, <span th:text="${client.nom}">Client</span></h1>
+    </div>
+
+    <div class="hero-strip">
+        <div class="hero-cell">
+            <p class="hero-label">Compte</p>
+            <p class="hero-line" th:text="${client.email}">email</p>
+            <p class="hero-line" th:text="${client.telephone}">téléphone</p>
+        </div>
+        <div class="hero-cell">
+            <p class="hero-label">Courses</p>
+            <p class="hero-big" th:text="${#lists.size(courses)}">0</p>
+        </div>
+        <div class="hero-cell hero-actions">
+            <a class="btn" th:href="@{/client/course/nouveau}">Commander un taxi</a>
+            <a class="btn btn-ghost" th:href="@{/client/parking}">Réserver un parking</a>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="section-head"><h2>Mes courses</h2></div>
+        <div class="panel table-panel"><div class="table-wrap">
+            <table class="data">
+                <thead>
+                    <tr><th>Trajet</th><th class="num">Passagers</th><th class="num">Tarif (Ar)</th><th>Chauffeur</th><th>Statut</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c:${courses}">
+                        <td>
+                            <span class="route">
+                                <span th:text="${c.depart}"></span>
+                                <i class="route-line" aria-hidden="true"></i>
+                                <span th:text="${c.destination}"></span>
+                            </span>
+                        </td>
+                        <td class="num" th:text="${c.nombrePersonnes}"></td>
+                        <td class="num" th:text="${c.tarif}"></td>
+                        <td th:text="${c.chauffeurNom != null ? c.chauffeurNom : 'Aucun chauffeur attribué'}"></td>
+                        <td>
+                            <span th:replace="~{fragments/layout :: statut(${c.statut})}"></span>
+                            <p class="cell-note" th:if="${c.statut.name() == 'EN_ATTENTE'}">Aucun chauffeur éligible n'est disponible pour le moment. Votre demande reste en attente d'attribution.</p>
+                            <p class="cell-note" th:if="${c.statut.name() == 'ASSIGNEE'}">Un chauffeur a été attribué automatiquement. Il peut maintenant démarrer la course.</p>
+                            <p class="cell-note" th:if="${c.statut.name() == 'EN_COURS'}">Votre course est en cours.</p>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(courses)}"><td class="empty" colspan="5">Vous n'avez pas encore commandé de course.</td></tr>
+                </tbody>
+            </table>
+        </div></div>
+    </section>
+
+</main>
+</body>
+</html>

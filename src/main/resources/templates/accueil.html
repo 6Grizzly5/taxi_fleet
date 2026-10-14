@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Accueil')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: topbar('accueil', 'accueil')}"></div>
+<main class="page page-narrow" id="contenu">
+    <div class="panel panel-pad">
+        <h1>TaxiParking</h1>
+        <p class="hint">Application de gestion de flotte de taxis et de parking.</p>
+    </div>
+</main>
+</body>
+</html>

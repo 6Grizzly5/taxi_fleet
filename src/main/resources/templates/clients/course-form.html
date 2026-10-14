@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Commander un taxi')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: topbar('client', 'course')}"></div>
+
+<main class="page page-narrow" id="contenu">
+
+    <div class="page-head">
+        <h1>Commander un taxi</h1>
+    </div>
+
+    <div class="panel panel-pad">
+        <form method="post" th:action="@{/client/course}" th:object="${request}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+            <div class="form-grid">
+                <div class="field">
+                    <label for="depart">Départ</label>
+                    <input th:field="*{depart}" placeholder="Ex: Ivato">
+                    <span class="field-error" th:if="${#fields.hasErrors('depart')}" th:errors="*{depart}"></span>
+                </div>
+                <div class="field">
+                    <label for="destination">Destination</label>
+                    <input th:field="*{destination}" placeholder="Ex: Analakely">
+                    <span class="field-error" th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}"></span>
+                </div>
+                <div class="field">
+                    <label for="nombrePersonnes">Nombre de passagers</label>
+                    <input th:field="*{nombrePersonnes}" type="number" min="1">
+                    <span class="field-error" th:if="${#fields.hasErrors('nombrePersonnes')}" th:errors="*{nombrePersonnes}"></span>
+                </div>
+                <div class="field">
+                    <label for="distance">Distance estimée (km)</label>
+                    <input th:field="*{distance}" type="number" min="0.1" step="0.1" required>
+                    <span class="field-error" th:if="${#fields.hasErrors('distance')}" th:errors="*{distance}"></span>
+                </div>
+                <div class="field">
+                    <label for="tarif">Tarif proposé (Ar)</label>
+                    <input th:field="*{tarif}" type="number" min="1" step="1" required>
+                    <span class="field-error" th:if="${#fields.hasErrors('tarif')}" th:errors="*{tarif}"></span>
+                </div>
+                <div class="field">
+                    <label for="dateHeure">Date et heure souhaitées (facultatif)</label>
+                    <input th:field="*{dateHeure}" type="datetime-local">
+                    <span class="field-error" th:if="${#fields.hasErrors('dateHeure')}" th:errors="*{dateHeure}"></span>
+                </div>
+            </div>
+            <p class="hint">Si aucune date n'est choisie, la demande est enregistrée à l'heure actuelle.</p>
+
+            <div class="form-actions">
+                <button class="btn" type="submit">Commander</button>
+            </div>
+        </form>
+    </div>
+
+</main>
+</body>
+</html>

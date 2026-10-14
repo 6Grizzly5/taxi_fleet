@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Véhicules')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: topbar('admin', 'vehicules')}"></div>
+
+<main class="page" id="contenu">
+
+    <div class="page-head">
+        <h1>Véhicules</h1>
+    </div>
+
+    <form class="toolbar" method="get" th:action="@{/vehicules}">
+        <input type="search" name="search" th:value="${search}" placeholder="Rechercher par immatriculation" aria-label="Rechercher un véhicule">
+        <button class="btn btn-dark" type="submit">Rechercher</button>
+    </form>
+
+    <div class="panel table-panel">
+        <div class="table-wrap">
+            <table class="data">
+                <thead><tr><th>Immatriculation</th><th>Marque</th><th>Modèle</th><th class="num">Capacité</th><th>Statut</th></tr></thead>
+                <tbody>
+                    <tr th:each="v:${page.content}">
+                        <td><span class="plate" th:text="${v.immatriculation}"></span></td>
+                        <td th:text="${v.marque}"></td>
+                        <td th:text="${v.modele}"></td>
+                        <td class="num" th:text="${v.capacite}"></td>
+                        <td><span th:replace="~{fragments/layout :: statut(${v.statut})}"></span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(page.content)}"><td class="empty" colspan="5">Aucun véhicule trouvé.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <nav th:replace="~{fragments/layout :: pager(${page}, '/vehicules')}"></nav>
+    </div>
+
+</main>
+</body>
+</html>

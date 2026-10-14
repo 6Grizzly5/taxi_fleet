@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Administration')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: topbar('admin', 'dashboard')}"></div>
+
+<main class="page" id="contenu">
+
+    <div class="page-head">
+        <h1>Tableau de bord</h1>
+    </div>
+
+    <div class="stat-strip is-4">
+        <div class="stat"><p class="stat-label">Utilisateurs</p><p class="stat-value" th:text="${users}">0</p></div>
+        <div class="stat"><p class="stat-label">Clients</p><p class="stat-value" th:text="${clients}">0</p></div>
+        <div class="stat"><p class="stat-label">Chauffeurs</p><p class="stat-value" th:text="${chauffeurs}">0</p></div>
+        <div class="stat"><p class="stat-label">Véhicules</p><p class="stat-value" th:text="${vehicules}">0</p></div>
+        <div class="stat"><p class="stat-label">Courses</p><p class="stat-value" th:text="${courses}">0</p></div>
+        <div class="stat" th:classappend="${pendingCourses > 0} ? 'is-alert'"><p class="stat-label">En attente</p><p class="stat-value" th:text="${pendingCourses}">0</p></div>
+        <div class="stat"><p class="stat-label">Places libres</p><p class="stat-value" th:text="${freePlaces}">0</p></div>
+        <div class="stat"><p class="stat-label">Réservations</p><p class="stat-value" th:text="${reservations}">0</p></div>
+    </div>
+
+    <section class="section">
+        <div class="section-head">
+            <h2>Rentabilité et statistiques</h2>
+            <p th:text="|Période : ${stats.du} au ${stats.au}|"></p>
+        </div>
+
+        <form class="filter panel panel-pad" method="get" th:action="@{/admin/dashboard}">
+            <div class="field">
+                <label for="from">Du</label>
+                <input id="from" type="date" name="from" th:value="${statsFrom}" required>
+            </div>
+            <div class="field">
+                <label for="to">Au</label>
+                <input id="to" type="date" name="to" th:value="${statsTo}" required>
+            </div>
+            <button class="btn btn-dark" type="submit">Filtrer la période</button>
+        </form>
+
+        <div class="meters">
+            <div class="meter">
+                <p class="meter-label">Chiffre d'affaires</p>
+                <p class="meter-value" th:text="|${#numbers.formatDecimal(stats.chiffreAffaires, 1, 'COMMA', 2, 'POINT')} Ar|"></p>
+            </div>
+            <div class="meter">
+                <p class="meter-label">Commission société</p>
+                <p class="meter-value" th:text="|${#numbers.formatDecimal(stats.commissionEntreprise, 1, 'COMMA', 2, 'POINT')} Ar|"></p>
+            </div>
+            <div class="meter">
+                <p class="meter-label">Revenu chauffeurs</p>
+                <p class="meter-value" th:text="|${#numbers.formatDecimal(stats.revenuChauffeurs, 1, 'COMMA', 2, 'POINT')} Ar|"></p>
+            </div>
+        </div>
+
+        <div class="stat-strip is-3">
+            <div class="stat"><p class="stat-label">Courses terminées</p><p class="stat-value" th:text="${stats.coursesTerminees}">0</p></div>
+            <div class="stat"><p class="stat-label">Distance parcourue</p><p class="stat-value" th:text="|${stats.distanceParcourueKm} km|">0 km</p></div>
+            <div class="stat"><p class="stat-label">Taux d'annulation</p><p class="stat-value" th:text="|${stats.tauxAnnulationPourcent}%|">0%</p></div>
+            <div class="stat"><p class="stat-label">Revenu moyen/course</p><p class="stat-value" th:text="|${#numbers.formatDecimal(stats.revenuMoyenParCourse, 1, 'COMMA', 2, 'POINT')} Ar|">0 Ar</p></div>
+            <div class="stat"><p class="stat-label">Chauffeur le plus actif</p><p class="stat-value is-text" th:text="${stats.chauffeurLePlusActif}">-</p></div>
+            <div class="stat"><p class="stat-label">Véhicule le plus utilisé</p><p class="stat-value is-text" th:text="${stats.vehiculeLePlusUtilise}">-</p></div>
+        </div>
+    </section>
+
+    <section class="section cols-2">
+        <div>
+            <div class="section-head"><h3>Chiffre d'affaires par chauffeur</h3></div>
+            <div class="panel table-panel"><div class="table-wrap">
+                <table class="data">
+                    <thead><tr><th>Chauffeur</th><th class="num">Chiffre d'affaires</th></tr></thead>
+                    <tbody>
+                        <tr th:each="entry : ${stats.chiffreAffairesParChauffeur.entrySet()}">
+                            <td th:text="${entry.key}"></td>
+                            <td class="num" th:text="|${entry.value} Ar|"></td>
+                        </tr>
+                        <tr th:if="${stats.chiffreAffairesParChauffeur.isEmpty()}"><td class="empty" colspan="2">Aucune course terminée sur cette période.</td></tr>
+                    </tbody>
+                </table>
+            </div></div>
+        </div>
+        <div>
+            <div class="section-head"><h3>Chiffre d'affaires par véhicule</h3></div>
+            <div class="panel table-panel"><div class="table-wrap">
+                <table class="data">
+                    <thead><tr><th>Immatriculation</th><th class="num">Chiffre d'affaires</th></tr></thead>
+                    <tbody>
+                        <tr th:each="entry : ${stats.chiffreAffairesParVehicule.entrySet()}">
+                            <td><span class="plate" th:text="${entry.key}"></span></td>
+                            <td class="num" th:text="|${entry.value} Ar|"></td>
+                        </tr>
+                        <tr th:if="${stats.chiffreAffairesParVehicule.isEmpty()}"><td class="empty" colspan="2">Aucune course terminée sur cette période.</td></tr>
+                    </tbody>
+                </table>
+            </div></div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-head"><h2>Supervision des chauffeurs</h2></div>
+        <div class="panel table-panel"><div class="table-wrap">
+            <table class="data">
+                <thead>
+                    <tr><th>Nom</th><th>Permis</th><th>Statut</th><th>Véhicule</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="d:${drivers}">
+                        <td class="strong" th:text="${d.nom}"></td>
+                        <td th:text="${d.numeroPermis}"></td>
+                        <td><span th:replace="~{fragments/layout :: statut(${d.statut})}"></span></td>
+                        <td>
+                            <span class="plate" th:if="${d.vehicule != null}" th:text="${d.vehicule.immatriculation}"></span>
+                            <span th:if="${d.vehicule == null}">-</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <form method="post" th:action="@{/admin/chauffeur/{id}/valider(id=${d.id})}">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                    <button class="btn btn-sm" type="submit">Valider</button>
+                                </form>
+                                <form method="post" th:action="@{/admin/chauffeur/{id}/suspendre(id=${d.id})}">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                    <button class="btn btn-danger btn-sm" type="submit">Suspendre</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(drivers)}"><td class="empty" colspan="5">Aucun chauffeur enregistré.</td></tr>
+                </tbody>
+            </table>
+        </div></div>
+    </section>
+
+</main>
+</body>
+</html>
