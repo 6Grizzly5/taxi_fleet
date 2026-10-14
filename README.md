@@ -75,7 +75,7 @@ Les statistiques sont disponibles sur `GET /api/statistics/revenue` et `GET /api
 Exemple : `GET http://localhost:8080/api/statistics/revenue?from=2026-01-01&to=2026-12-31`. Les routes `/api/statistics/**`, l'attribution et l'annulation sont réservées au rôle ADMIN. Les routes REST protégées utilisent la configuration Spring Security du projet.
 
 
-## Vérifications rapides avant la soutenance
+## Vérifications rapides 
 
 1. Démarrer MySQL et créer (ou laisser Spring créer) la base `taxi_fleet`.
 2. Vérifier `src/main/resources/application.properties` et adapter l'identifiant/mot de passe MySQL si nécessaire.
